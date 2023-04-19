@@ -1,0 +1,242 @@
+<html>
+
+	<head>
+		
+		<title>Tracey M</title>
+
+		<meta name ="description" content="Portfolio for aspiring developer working toward specializing in full-stack engineering via Python + Javascript">
+		 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.0.0-beta/css/bootstrap.min.css">
+		 <link rel="stylesheet" text="text/css" href="style2.css">
+
+		 <link href="https://fonts.googleapis.com/css?family=BenchNine:300,400,700|Pacifico" rel="stylesheet">
+
+		<link rel="stylesheet" href="prism-atom-dark.css" type="text/css" media="screen" />
+	
+		<script type="text/javascript" src="prism.js"></script>
+		<script type="text/javascript" src="prism.ruby.js"></script>
+
+	</head>
+
+	<body>
+
+		<div class = "container-fluid">
+			<div class = "about-container mt-3">
+			<div class = "row">
+				<div class = "col-12">
+					<ul class = "m-1">
+						<li class = "d-inline-block m-2 "><a href = "#">About</a></li>
+						<li class = "d-inline-block m-2"><a href ="#code-samples">Code Samples</a></li>
+						<li class = "d-inline-block m-2"><a href = "#web-apps">Projects</a></li>
+						<li class = "d-inline-block m-2"><a href = "#skills-tools">Skills &amp; Tools</a></li>
+						<li class = "d-inline-block m-2"><a href = "#contact">Contact me</a></li>
+					</ul>	
+				</div>
+			</div>
+
+			<div class ="row m-3">
+				<div class = "col-3">
+					<img src="me_2.png" height = "200px" class="rounded-circle"/>
+				</div>
+				<div class ="col-9">
+					<h1 class = "text-center">Tracey M.</h1>
+					<h2 class = "text-center">Design and Development</h2>
+					<hr/>
+					<p>
+					First responder helping B2B accounts in issue resolution and the use and understanding of saas products. I enjoy a good bug hunt! and have a diverse set of skills, ranging from design to HTML +  CSS + Javascript all the way to Python. 
+					</p>
+				</div>
+			</div>
+			</div>
+
+			<div class = "row">
+				<div class = "col-12">
+					<h3 id = "code-samples" class ="text-center">Code Samples</h3>
+					<hr class = "line">
+				</div>
+			</div>
+
+			<div class = "row">
+				<div class = "col-6">
+					<h4>HTTP request from Excel!</h4>
+					<p>This vba program will loop through rows and set up key value/pairs for payload. Then makes an HTTP call for each row. Requires: Installing https://github.com/VBA-tools/VBA-JSON and including a reference to Microsoft Scripting Runtime
+					</p>
+					<p>This was a work project written for a client. Their CRM system did not support POST to an endpoint. This client's programmer wanted to do a workaround where instead of real-time calls to an endpoint, they would pull a file twice a day.  The client requested some sample working code in VBA</p>
+				</div>
+				<div class = "col-6 h-50" style="overflow:scroll">
+					<pre><code class="language-ruby">Public Sub httpRequest()
+
+Dim rng As Range, myitem As New Dictionary, subitem As New Dictionary, cell As Variant
+Set rng = Range(&quot;A2:A3&quot;)
+'set range value
+
+Dim Obj As New Dictionary
+Dim objHTTP As Object
+Dim Json As String
+
+For Each cell In rng
+subitem(&quot;name&quot;) = cell.Value
+subitem(&quot;email&quot;) = cell.Offset(0, 1).Value
+myitem.Add &quot;customer&quot;, subitem
+Set subitem = Nothing
+myitem(&quot;ext_interaction_id&quot;) = cell.Offset(0, 2).Value
+subitem(&quot;email&quot;) = cell.Offset(0, 3).Value
+myitem.Add &quot;employee&quot;, subitem
+myitem(&quot;channel&quot;) = cell.Offset(0, 4).Value
+Json = ConvertToJson(myitem)
+
+Set objHTTP = CreateObject(&quot;MSXML2.serverXMLHTTP&quot;)
+Url = &quot;ENTER URL&quot;
+objHTTP.Open &quot;POST&quot;, Url, False
+
+objHTTP.setRequestHeader &quot;Content-type&quot;, &quot;applicaton/json&quot;
+objHTTP.setRequestHeader &quot;Accept&quot;, &quot;application/json&quot;
+objHTTP.setRequestHeader &quot;x-api-key&quot;, &quot;YOUR API KEY HERE&quot;
+objHTTP.send (Json)
+result = objHTTP.responseText
+
+Set objHTTP = Nothing
+Set myitem = Nothing
+Set subitem = Nothing
+
+Next
+
+End Sub
+					</code></pre>
+				</div>
+			</div>
+			
+			<div class = "row">
+				<div class = "col-6 h-50" style ="overflow:scroll">
+					<pre><code class="language-ruby">USER = 'user email'+ '/token'
+PWD = ''
+HEADERS = {'content-type': 'application/json'}
+
+session= requests.Session()
+session.auth= (USER, PWD)
+session.headers = HEADERS
+
+
+UPDATE_TKT_URL = 'https://yourdomain.zendesk.com/api/v2/tickets/'
+CREATE_TKT_URL = 'https://yourdomain.zendesk.com/api/v2/tickets.json'
+
+#create service recovery variables
+SUBJECT = 'Service Recovery'
+BAD_RATING = [1,2,3]
+
+response_data = response.json()
+
+for feedback in response_data['responses']:
+    if 'DESK' not in feedback['ext_interaction_id']:
+        star_rating = feedback['star_rating']
+        comments = feedback['comments']
+        tkt_id = feedback['ext_interaction_id']
+        url =  UPDATE_TKT_URL + tkt_id + '.json'
+        
+
+        data = {'ticket': {'custom_fields': [{'id': 114098722811, 'value': star_rating}, {'id': 114098722791, 'value': comments}]}}
+        payload = json.dumps(data)
+        response = session.put(url, data=payload)
+
+    # Check response
+        if response.status_code != 200:
+            print('Status:', response.status_code, 'Problem with the request. Exiting.')
+            exit()
+        #Report success
+        print('Successfully added comment to ticket #{}'.format(tkt_id))
+
+        #create a service recovery ticket in Zendesk if star rating is 3, 2, 1
+        if star_rating in BAD_RATING:
+            initial_request_id = feedback['request_id']
+            tkt_body = 'Ticket #{} received a star rating of {} with these comments: {}'.format(tkt_id, star_rating, comments)
+            data = {'ticket': {'subject': SUBJECT, 'comment': {'body': tkt_body} , 'custom_fields': [{'id': 114101265792, 'value': initial_request_id}]}}
+            payload = json.dumps(data)
+            response = session.post(CREATE_TKT_URL, data=payload)
+            
+            #check for HTTP codes other than 200
+            if response.status_code != 201:
+                print('Status:', response.status_code, 'Problem with the request. Exiting.')
+                exit()
+            #Report success
+            print('Successfully created service recovery ticket for  #{}'.format(tkt_id))   
+					</code></pre>
+				</div>
+				<div class = "col-6">
+					<h4>HTTP request in Python using Zendesk APIs </h4>
+  					<p>This is part of a script that uses the Zendesk APIs for creating and updating a ticket. I am running Python 3.6.2.  The script imports JSON, requests and datetime libraries.</p>
+                    <p>The script uses a json dictionary that is retrieved from another endpoint.  It loops through each dataset looking for Zendesk data only. When it finds a response from Zendesk, it updates custom fields on solved tickets.  Based on certain values found, it will also then create tickets.
+  					</p>
+				</div>
+			</div>
+
+			<div class = "row">
+				<div class = "col-12 text-center">
+						<h3 id = "web-apps">Projects</h3>
+						<hr class="line"/>
+				</div>
+			</div>
+
+			<div class = "row">
+				<div class = "col-6 text-center">
+					<a href ="https://codepen.io/tmartin134/full/dZXXyr/" target = "_blank"><img src="tribute_page.png" class = "img-fluid h-50 w-75"/></a>
+					<p>Tribute Page for Frank Llyod Wright</p>
+				</div>
+				<div class = "col-6 text-center">
+					<a href = "https://codepen.io/tmartin134/pen/QaYeze" target = "_blank"><img src="animalCard.png" class = "img-fluid h-50 w-75"/></a>
+					<p>Labrador Retriever Animal Trading Card</p>
+				</div>
+			</div>
+			
+			<div class = "row">
+				<div class = "col-6 text-center">
+					<a href = "https://codepen.io/tmartin134/pen/PRyVKw" target = "_blank"><img src="pixel_art_maker.png" class = "img-fluid h-50 w-75"/></a>
+					<p>Pixel Art Maker</p>
+				</div>
+				<div class = "col-6 text-center">
+					<a href = "https://pawsitivepics.com/" target = "_blank"><img src="paws_pics.png" class = "img-fluid h-50 w-75"/></a>
+					<p>Personal wordpress site for volunteer pet photography</p>
+				</div>
+			</div>
+			<div class = "row">
+				<div class = "col-12">
+					 <h3 id = "skills-tools" class = "text-center">Skills &amp; Tools</h3>
+   					 <hr class="line"/>
+    				<p class = "text-center">Currently developing proficiency and expertise in the following languages andcomfort with the following tools.
+    				</p>
+				</div>
+			</div>
+
+			<div class = "row">
+				<div class = "col-12 text-center">
+    				<img src = "Slack App Icon.png" class = "skills-icon" />
+                    <img src = "Kibana - Mark - Full Color.png" class = "skills-icon" />
+                    <img src = "jira.png" class = "skills-icon" />
+                    <img src = "Mandrill.png" class = "skills-icon" />
+    				<img src = "NewRelic-logo-square.png" class = "skills-icon" />
+                    <img src = "zendesk-medium.png" class = "skills-icon" />
+    			</div>
+			</div>
+
+			<div class = "row">
+				<div class = "col-12 text-center mb-2">
+					<img src = "skills.png" class = "skills-list" />
+
+				</div>
+			</div>
+
+			<div class = "row contact-me">
+				<div class = "col-12">
+					<h3 id = "contact" class = "text-center text-white">Contact</h3>
+    				<hr class="white-line"/>
+    				<p class = "text-center text-white">Please get in touch via:</p>
+    				<div class = "text-center">
+    					<a href = "https://codepen.io/tmartin134/" target = "new"><img src = "codepen.ico" class = "contact-icon" /></a>
+    					<a href = "https://gist.github.com/tmart134/" target = "new"><img src = "Limav-Flat-Gradient-Social-Github.ico" class = "contact-icon" /></a>
+   						<a href ="https://stackoverflow.com/users/9005191/tracey-martin" target  = "new"><img src = "Limav-Flat-Gradient-Social-Stackoverflow.ico" class = "contact-icon" /></a>
+   						<a href = "https://www.linkedin.com/in/tracey-martin-63849230/" target = "new"><img src = "Martz90-Circle-Linkedin.ico" class = "contact-icon"  /></a>
+   					</div>	
+				</div>
+			</div>
+		</div>
+		
+	</body>
+</html>

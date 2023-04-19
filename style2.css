@@ -1,0 +1,62 @@
+body {
+
+	background-color:  #e6e6e6;
+    color: #404040;
+}
+.about-container {
+  background: url('bg.jpg') no-repeat center center fixed; 
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+  height: 600px;
+}
+
+.line {
+	border-top: 5px double #404040;
+	width: 85%;
+	border-right: none;
+	border-bottom: none;
+	}
+
+.white-line {
+	border-top: 5px double #ffffff;
+	width: 85%;
+	border-right: none;
+	border-bottom: none;
+	}
+
+h3, h4{
+	margin-top: 20px;
+}
+
+.skills-icon {
+	margin: 20px 10px;
+	height: 60px;
+}
+
+.skills-list {
+    height: 95px;
+    width: 50%
+}
+    
+
+.contact-me {
+
+	background-color: #404040;
+	height: 350px;
+}
+
+a {
+    color: #404040;
+}
+
+a:hover{
+    color: #404040;
+}
+
+.contact-icon {
+	height: 70px;
+    margin: 1em;
+
+}
